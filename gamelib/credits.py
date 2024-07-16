@@ -2,30 +2,30 @@
 '''
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import load_font, load_image, load_sound, render_text, FONT_TITLE, FONT_MAIN
 
-class CreditsScene(scene.Scene):
+class CreditsScene(Scene):
     def __init__(self, game, name, index, config=None):
         super(CreditsScene, self).__init__(game, name, index, config)
 
-        self.text = data.render_text(data.FONT_TITLE, 37, 'Thanks for Playing', (255, 255, 255))
+        self.text = render_text(FONT_TITLE, 37, 'Thanks for Playing', (255, 255, 255))
         self.textrect = self.text.get_rect()
 
-        font = data.load_font(data.FONT_MAIN, 17)
+        font = load_font(FONT_MAIN, 17)
         names = ('cyqui', 'gleuh', 'greg0ire', 'joksnet')
 
-        self.designLabel = data.render_text(data.FONT_TITLE, 23, 'Design:', (255, 255, 127))
+        self.designLabel = render_text(FONT_TITLE, 23, 'Design:', (255, 255, 127))
         self.designLabelRect = self.designLabel.get_rect()
-        self.design = data.render_text(data.FONT_MAIN, 21, 'tocab', (255, 255, 255))
+        self.design = render_text(FONT_MAIN, 21, 'tocab', (255, 255, 255))
         self.designRect = self.design.get_rect()
 
-        self.musicLabel = data.render_text(data.FONT_TITLE, 23, 'Music:', (255, 255, 127))
+        self.musicLabel = render_text(FONT_TITLE, 23, 'Music:', (255, 255, 127))
         self.musicLabelRect = self.musicLabel.get_rect()
-        self.music = data.render_text(data.FONT_MAIN, 21, 'TOTOleHero', (255, 255, 255))
+        self.music = render_text(FONT_MAIN, 21, 'TOTOleHero', (255, 255, 255))
         self.musicRect = self.music.get_rect()
 
-        self.namesLabel = data.render_text(data.FONT_TITLE, 23, 'Developers', (255, 255, 127))
+        self.namesLabel = render_text(FONT_TITLE, 23, 'Developers', (255, 255, 127))
         self.namesLabelRect = self.namesLabel.get_rect()
 
         self.names = []
@@ -36,11 +36,11 @@ class CreditsScene(scene.Scene):
 
             self.names.append((rend, rect))
 
-        self.team = data.render_text(data.FONT_TITLE, 37, 'The Bouba Team', (60, 255, 60))
+        self.team = render_text(FONT_TITLE, 37, 'The Bouba Team', (60, 255, 60))
         self.teamRect = self.team.get_rect()
 
-        self.background = data.load_image('credits.png')
-        self.music_bg = data.load_sound('credits.ogg')
+        self.background = load_image('credits.png')
+        self.music_bg = load_sound('credits.ogg')
 
     def start(self):
         self.music_bg.play(-1, fade_ms=1000)

@@ -7,11 +7,11 @@ package.
 '''
 
 import pygame
-import game
+from gamelib.game import Game
 
 def main():
     pygame.init();
     pygame.mixer.init(frequency=44100,buffer=1024)
 
-    g = game.Game()
+    g = Game()
     g.run()

@@ -2,19 +2,19 @@
 '''
 
 import pygame
-import scene
-import button
-import data
+from gamelib.scene import Scene
+from gamelib.button import SequenceButtonGroup, PlayableButtonGroup
+from gamelib.data import load_font, load_image, load_sound, render_text, FONT_FIX, FONT_MAIN
 import string
 
-class LevelScene(scene.Scene):
+class LevelScene(Scene):
     '''Is the basic level.
     '''
 
     def __init__(self, game, name, index, config=None):
         super(LevelScene, self).__init__(game, name, index, config)
 
-        self.font = data.load_font(data.FONT_FIX, 23)
+        self.font = load_font(FONT_FIX, 23)
 
         self.count = config['count'] if 'count' in config else 9
         self.delta = config['delta'] if 'delta' in config else 1000
@@ -24,8 +24,8 @@ class LevelScene(scene.Scene):
         self.pointsMulti = config['pointsMulti'] if 'pointsMulti' in config else 1
         self.pointsText = None
 
-        self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 15, 5, self.count, self.delta)
-        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count, 750)
+        self.sequence = SequenceButtonGroup((20, 20), (210, 100), 15, 5, self.count, self.delta)
+        self.buttons = PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count, 750)
 
         self.seqindex = 0
         self.sequencing = False
@@ -33,13 +33,13 @@ class LevelScene(scene.Scene):
         self.play = []
         self.playing = False
 
-        self.background = data.load_image('background.png')
-        self.ray = data.load_image('ray.png')
-        self.piano = data.load_image('piano.png')
+        self.background = load_image('background.png')
+        self.ray = load_image('ray.png')
+        self.piano = load_image('piano.png')
 
-        self.music_bg = data.load_sound('background.ogg', self.name)
+        self.music_bg = load_sound('background.ogg', self.name)
         self.music_bg.set_volume(self.volume)
-        self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
+        self.music_pre_bg = load_sound('pre-background.ogg', self.name)
         self.music_pre_bg.set_volume(0.3)
 
         self.sequence.associateTheme(self.name) 
@@ -59,10 +59,10 @@ class LevelScene(scene.Scene):
         self.stepCounterText = None
         self.rectWidth = 0
 
-        boss = data.load_image('boss.png', self.name)
+        boss = load_image('boss.png', self.name)
         boss.set_colorkey((255, 0, 255))
         
-        miniboss = data.load_image('boss_mini.png', self.name)
+        miniboss = load_image('boss_mini.png', self.name)
         miniboss.set_colorkey((255, 0, 255))    
             
         self.animMiniBossImage = miniboss # pygame.transform.scale(boss, (170, 170))
@@ -89,7 +89,7 @@ class LevelScene(scene.Scene):
         self.bottomPanel.fill((100, 100, 100))
         self.bottomPanel.set_alpha(200)
 
-        self.bottomText     = data.render_text(data.FONT_MAIN, 30, self.name.replace('-', ' ') + " starting in...", (255, 0, 0))
+        self.bottomText     = render_text(FONT_MAIN, 30, self.name.replace('-', ' ') + " starting in...", (255, 0, 0))
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
@@ -209,7 +209,7 @@ class LevelScene(scene.Scene):
                 elif self.animBossAction == 'moveup':
                     
                     self.animBossRect = self.animMiniBossImage.get_rect()
-                    self.bottomText = data.render_text(data.FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
+                    self.bottomText = render_text(FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
                     self.bottomTextRect = self.bottomText.get_rect()
                     self.bottomTextRect.center = (320, 360)
 
@@ -228,7 +228,7 @@ class LevelScene(scene.Scene):
                         self.animBossActionCount = 0
                         self.animBossAction = None
                         self.animBossShowRaw = False
-                        self.background = data.load_image('background.png', self.name)
+                        self.background = load_image('background.png', self.name)
                 else:
                     self.seqStart()
 

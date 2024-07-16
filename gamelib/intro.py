@@ -4,15 +4,15 @@
 '''
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import load_image, load_sound, render_text, FONT_MAIN
 
-class IntroScene(scene.Scene):
+class IntroScene(Scene):
     def __init__(self, game, name, index, config=None):
         super(IntroScene, self).__init__(game, name, index, config)
 
-        self.background = data.load_image('intro.png')
-        self.music = data.load_sound('intro.ogg')
+        self.background = load_image('intro.png')
+        self.music = load_sound('intro.ogg')
 
         self.endTime = None
         self.currentIntroIdx = None
@@ -28,7 +28,7 @@ class IntroScene(scene.Scene):
 
     def start(self):
         #Blink text
-        self.blinkText = data.render_text(data.FONT_MAIN, 15, '(Press SPACE to skip)', (51, 204, 0))
+        self.blinkText = render_text(FONT_MAIN, 15, '(Press SPACE to skip)', (51, 204, 0))
         self.blinkTextRect = self.blinkText.get_rect()
         self.blinkTextRect.center = (320, 30)
         self.blinkTextRect.top = 430
@@ -88,7 +88,7 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text(data.FONT_MAIN, textsize, partText, (255, 255, 255))
+            tmpContent = render_text(FONT_MAIN, textsize, partText, (255, 255, 255))
             tmpSize = tmpContent.get_rect()
             tmpSize.centerx = self.get_rect().centerx
             tmpSize.top = top

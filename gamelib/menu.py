@@ -1,7 +1,7 @@
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import load_font, load_image, load_sound, FONT_TITLE
 
 class Menu(pygame.surface.Surface):
     '''Menu
@@ -17,7 +17,7 @@ class Menu(pygame.surface.Surface):
         self.menu = None
         self.menurect = None
 
-        self.font = data.load_font(data.FONT_TITLE, 45)
+        self.font = load_font(FONT_TITLE, 45)
         self.set_colorkey((0, 0, 0)) # Transparent background
 
     def update(self):
@@ -66,12 +66,12 @@ class Menu(pygame.surface.Surface):
         text, action = self.menus[self.current]
         action()
 
-class MenuScene(scene.Scene):
+class MenuScene(Scene):
     '''Menu Scene
     '''
 
     def __init__(self, game, name, index, config, size, menus):
-        scene.Scene.__init__(self, game, name, index, config)
+        Scene.__init__(self, game, name, index, config)
 
         self.menu = Menu(size, menus)
         self.menurect = self.menu.get_rect()
@@ -101,7 +101,7 @@ class MainMenuScene(MenuScene):
     '''
 
     def __init__(self, game, name, index, config=None):
-        self.background = data.load_image('menu.png')
+        self.background = load_image('menu.png')
 
         self.logoStep = 750
         self.logoImages = []
@@ -109,7 +109,7 @@ class MainMenuScene(MenuScene):
         self.logoTime = pygame.time.get_ticks() + self.logoStep
 
         for i in range(0,9):
-            self.logoImages.append(data.load_image('menu' + str(i + 1) + '.png'))
+            self.logoImages.append(load_image('menu' + str(i + 1) + '.png'))
             
         menus = (('Start Game', self.play),
                  ('How to play', self.howto),
@@ -167,7 +167,7 @@ class PauseMenuScene(MenuScene):
                  ('Back to Menu', self.back))
 
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
-        self.music_bg = data.load_sound('pause.ogg')
+        self.music_bg = load_sound('pause.ogg')
 
     def start(self):
         self.music_bg.play()

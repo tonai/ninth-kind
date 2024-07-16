@@ -2,25 +2,25 @@
 '''
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import filepath, load_image, load_sound, render_text, FONT_TITLE, FONT_MAIN
 import string
 import os
 
-class GameOverScene(scene.Scene):
+class GameOverScene(Scene):
     def __init__(self, game, name, index, config=None):
         super(GameOverScene, self).__init__(game, name, index, config)
 
         gameovermessage = config['message'] if 'message' in config else 'Game Over'
         gameovermusic = config['music'] if 'music' in config else 'gameover.ogg'
 
-        self.gameovertxt = data.render_text(data.FONT_TITLE, 30, gameovermessage, (255, 255, 255))
+        self.gameovertxt = render_text(FONT_TITLE, 30, gameovermessage, (255, 255, 255))
         self.gameovertxtRect = self.gameovertxt.get_rect()
-        self.background = data.load_image('gameover.png')
+        self.background = load_image('gameover.png')
 
-        self.music_bg = data.load_sound(gameovermusic)
+        self.music_bg = load_sound(gameovermusic)
 
-        self.teaserText = data.render_text(data.FONT_MAIN, 17, 'Who\'s the rockstar with '+str(self.game.points)+' points ?', (255, 255, 255))
+        self.teaserText = render_text(FONT_MAIN, 17, 'Who\'s the rockstar with '+str(self.game.points)+' points ?', (255, 255, 255))
         self.teaserTextrect = self.teaserText.get_rect()
 
         #temp
@@ -38,7 +38,7 @@ class GameOverScene(scene.Scene):
         self.buildTabScore()
         
     def buildTabScore(self):
-        self.lScoreFile = open(data.filepath('topscore.txt'), 'r')
+        self.lScoreFile = open(filepath('topscore.txt'), 'r')
         self.userscores = self.lScoreFile.readlines()
         self.lScoreFile.close()
         self.orderedTabScore = []
@@ -92,7 +92,7 @@ class GameOverScene(scene.Scene):
                     self.userFilledStr.pop()
                         
         self.gameovertxtRect.center = (320, 20)
-        self.usernickText = data.render_text(data.FONT_TITLE, 17, "".join(self.userFilledStr), (255, 255, 255))
+        self.usernickText = render_text(FONT_TITLE, 17, "".join(self.userFilledStr), (255, 255, 255))
         self.usernickTextRect = self.usernickText.get_rect()
         self.teaserTextrect.center = (320, 50)
         self.usernickTextRect.center = (320, 70)
@@ -112,13 +112,13 @@ class GameOverScene(scene.Scene):
         y = 70
         for userPts, username in self.orderedTabScore:
                 y+=20
-                tabScoreName = data.render_text(data.FONT_TITLE, 17, str(userPts)+"-"+username, (255, 255, 255))
+                tabScoreName = render_text(FONT_TITLE, 17, str(userPts)+"-"+username, (255, 255, 255))
                 rect = tabScoreName.get_rect()
                 rect.center = (320, y)
                 screen.blit(tabScoreName,rect)
 
     def saveUserName(self):
-        self.lScoreFile = open(data.filepath('topscore.txt'), 'a+')
+        self.lScoreFile = open(filepath('topscore.txt'), 'a+')
         lstr = "".join(self.userFilledStr)
         self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip())+os.linesep)
         self.lScoreFile.close()

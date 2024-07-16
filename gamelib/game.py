@@ -2,15 +2,15 @@
 '''
 
 import pygame
-import director
-import data
+from gamelib.director import Director
+from gamelib.data import load_sound
 
-from intro import IntroScene
-from menu import MainMenuScene, PauseMenuScene
-from credits import CreditsScene
-from howto import HowtoScene
-from level import LevelScene
-from gameover import GameOverScene
+from gamelib.intro import IntroScene
+from gamelib.menu import MainMenuScene, PauseMenuScene
+from gamelib.credits import CreditsScene
+from gamelib.howto import HowtoScene
+from gamelib.level import LevelScene
+from gamelib.gameover import GameOverScene
 
 class Game(object):
     '''Manage the general game logic.
@@ -20,10 +20,10 @@ class Game(object):
         self.level  = None
         self.difficulty = 4
         self.points = 0
-        self.director = director.Director(self, {
+        self.director = Director(self, {
             'title' : 'Ninth Kind',
             'show_fps' : False})
-        self.music = data.load_sound('intro.ogg')
+        self.music = load_sound('intro.ogg')
         self.channel = None
 
     def run(self):

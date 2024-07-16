@@ -2,8 +2,8 @@
 '''
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import load_font, FONT_MAIN
 
 class Director(object):
     '''Manage the logic behind the scenes.
@@ -50,7 +50,7 @@ class Director(object):
         self.scenes = []
 
     def register(self, name, klass, config=None):
-        if not issubclass(klass, scene.Scene):
+        if not issubclass(klass, Scene):
             raise TypeError('Class passed is not a Scene')
         self.scenes.append([name, klass, None, config])
 
@@ -122,7 +122,7 @@ class Director(object):
             self.scene.draw(self.screen)
 
             if self.config['show_fps']:
-                font = data.load_font(data.FONT_MAIN, 23)
+                font = load_font(FONT_MAIN, 23)
                 fps = '%.1f' % self.clock.get_fps()
                 text = font.render(fps, False, (255, 0, 255))
 

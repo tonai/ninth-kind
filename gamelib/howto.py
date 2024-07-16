@@ -2,18 +2,18 @@
 '''
 
 import pygame
-import scene
-import data
+from gamelib.scene import Scene
+from gamelib.data import load_image, load_font, load_sound, render_text, FONT_MAIN
 
-class HowtoScene(scene.Scene):
+class HowtoScene(Scene):
     def __init__(self, game, name, index, config=None):
         super(HowtoScene, self).__init__(game, name, index, config)
 
-        self.bg_text = data.load_image('howtoplay.png')
+        self.bg_text = load_image('howtoplay.png')
         self.bg_text = pygame.transform.scale(self.bg_text, (534, 400))
         self.bg_textrect = self.bg_text.get_rect()
         
-        fontText = data.load_font(data.FONT_MAIN, 20)
+        fontText = load_font(FONT_MAIN, 20)
         fontText.set_bold(True)
         
         texts = [
@@ -28,13 +28,13 @@ class HowtoScene(scene.Scene):
             textrect.left = phrase['left']
             self.bg_text.blit(text, textrect)
         
-        self.text = data.render_text(data.FONT_MAIN, 37, 'Push the button !', (255, 255, 255))
+        self.text = render_text(FONT_MAIN, 37, 'Push the button !', (255, 255, 255))
         self.textrect = self.text.get_rect()
         
 #        bg_text.blit(self.text, self.textrect)
 
-        self.background = data.load_image('credits.png')
-        self.music_bg = data.load_sound('credits.ogg')
+        self.background = load_image('credits.png')
+        self.music_bg = load_sound('credits.ogg')
 
     def start(self):
         self.music_bg.play(-1, fade_ms=1000)
@@ -57,7 +57,7 @@ class HowtoScene(scene.Scene):
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         
-        fontTitle = data.load_font(data.FONT_TITLE, 45)
+        fontTitle = load_font(FONT_TITLE, 45)
         fontTitle.set_underline(True)
         title = fontTitle.render('How to play', True, (255, 255, 255))
         titlerect = title.get_rect()
